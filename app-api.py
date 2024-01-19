@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS  # Import the CORS module
+from flask_cors import CORS
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from collections import OrderedDict
@@ -30,7 +30,6 @@ def scrape_americanas(query):
     for k, result in enumerate(search_results[2:12], start=1):
         result_html = result.text
         items[k] = [str(result_html)]
-        # print(f"Produto: {result_html}")
 
     product = driver.find_elements(By.CSS_SELECTOR, "[class*='ListPrice']")
     for i, result in enumerate(product[2:12], start=1):
@@ -68,9 +67,6 @@ def scrape_amazon(query):
         decimal_add = decimal[i-1].text
         items[i].append('R$ ' + str(result_html) + ',' + str(decimal_add))
         items[i].append('amazon')
-        # print(f"Preço: {result_html}")
-
-    # Add additional logic for scraping other details from Amazon if needed
 
     driver.quit()
     return items
@@ -94,7 +90,6 @@ def combine_data(americanas_data, amazon_data):
 
     return combined_data_ordered
 
-# Example usage:
 @app.route('/api/scrape', methods=['GET'])
 def scrape_data():
     query = request.args.get('query')
